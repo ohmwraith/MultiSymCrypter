@@ -52,12 +52,12 @@ namespace DESCrypterWindowsForms
 
             ICryptoTransform transform = DES.CreateEncryptor();
             String crypted_filename = Path.ChangeExtension(ofd.FileName, "crypt");
-            using (FileStream fileStreamEncrypt = new FileStream(crypted_filename, FileMode.OpenOrCreate))
+            using (FileStream fileStream = new FileStream(crypted_filename, FileMode.OpenOrCreate))
             {
                 // Запись случайного вектора инициализации без его шифрования
-                fileStreamEncrypt.Write(DES.IV, 0, DES.IV.Length);
+                fileStream.Write(DES.IV, 0, DES.IV.Length);
                 // Создание криптографического потока в режиме записи
-                using (CryptoStream cryptoStream = new CryptoStream(fileStreamEncrypt, transform, CryptoStreamMode.Write))
+                using (CryptoStream cryptoStream = new CryptoStream(fileStream, transform, CryptoStreamMode.Write))
                 {
                     // Создание объекта записи текста, который будет преобразовывать текст в
                     // двоичные данные
@@ -85,6 +85,35 @@ namespace DESCrypterWindowsForms
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.Text = TextFileHandler.load(ofd.FileName, DES.IV.Length);
+            }
+        }
+
+        private void расшифроватьФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream fileStream = new FileStream(ofd.FileName, FileMode.Open))
+                {
+                    // Чтение вектора инициализации
+                    Byte[] iv = new byte[DES.IV.Length];
+                    fileStream.Read(iv, 0, iv.Length);
+                    DES.IV = iv;
+                    // Создание интерфейса преобразования для дешифрования по алгоритму DES
+                    ICryptoTransform transform = DES.CreateDecryptor();
+                    // Создание криптографического потока в режиме записи. Этот поток будет
+                    // декодировать двоичные данные сразу после их чтения из файла
+                    using (CryptoStream cryptoStream = new CryptoStream(fileStream, transform, CryptoStreamMode.Read))
+                    {
+                        // Создание объекта чтения из текста. Он будет преобразовывать дешифрованные
+                        // данные из последовательности байт в строку
+                        using (StreamReader sr = new StreamReader(cryptoStream))
+                        {
+                            richTextBox2.Text = sr.ReadToEnd();
+                        }
+                    }
+                    MessageBox.Show("Сообщение успешно расшифровано!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
     }

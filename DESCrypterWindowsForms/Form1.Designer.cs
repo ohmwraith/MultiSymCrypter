@@ -38,6 +38,7 @@
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.дешифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.загрузитьКлючToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.расшифроватьФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.режимToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,17 +47,25 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(35, 213);
+            this.richTextBox1.EnableAutoDragDrop = true;
+            this.richTextBox1.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(35, 144);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(100, 96);
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBox1.Size = new System.Drawing.Size(200, 165);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(232, 213);
+            this.richTextBox2.EnableAutoDragDrop = true;
+            this.richTextBox2.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox2.Location = new System.Drawing.Point(319, 144);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(100, 96);
+            this.richTextBox2.ReadOnly = true;
+            this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBox2.Size = new System.Drawing.Size(201, 165);
             this.richTextBox2.TabIndex = 1;
             this.richTextBox2.Text = "";
             // 
@@ -71,7 +80,7 @@
             this.режимToolStripMenuItem});
             this.menuStripCrypt.Location = new System.Drawing.Point(0, 0);
             this.menuStripCrypt.Name = "menuStripCrypt";
-            this.menuStripCrypt.Size = new System.Drawing.Size(800, 35);
+            this.menuStripCrypt.Size = new System.Drawing.Size(583, 35);
             this.menuStripCrypt.TabIndex = 2;
             this.menuStripCrypt.Text = "Шифрование";
             // 
@@ -109,7 +118,8 @@
             // дешифрованиеToolStripMenuItem
             // 
             this.дешифрованиеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.загрузитьКлючToolStripMenuItem});
+            this.загрузитьКлючToolStripMenuItem,
+            this.расшифроватьФайлToolStripMenuItem});
             this.дешифрованиеToolStripMenuItem.Name = "дешифрованиеToolStripMenuItem";
             this.дешифрованиеToolStripMenuItem.Size = new System.Drawing.Size(157, 31);
             this.дешифрованиеToolStripMenuItem.Text = "Дешифрование";
@@ -117,9 +127,16 @@
             // загрузитьКлючToolStripMenuItem
             // 
             this.загрузитьКлючToolStripMenuItem.Name = "загрузитьКлючToolStripMenuItem";
-            this.загрузитьКлючToolStripMenuItem.Size = new System.Drawing.Size(230, 28);
+            this.загрузитьКлючToolStripMenuItem.Size = new System.Drawing.Size(277, 28);
             this.загрузитьКлючToolStripMenuItem.Text = "Загрузить ключ";
             this.загрузитьКлючToolStripMenuItem.Click += new System.EventHandler(this.загрузитьКлючToolStripMenuItem_Click);
+            // 
+            // расшифроватьФайлToolStripMenuItem
+            // 
+            this.расшифроватьФайлToolStripMenuItem.Name = "расшифроватьФайлToolStripMenuItem";
+            this.расшифроватьФайлToolStripMenuItem.Size = new System.Drawing.Size(277, 28);
+            this.расшифроватьФайлToolStripMenuItem.Text = "Расшифровать файл";
+            this.расшифроватьФайлToolStripMenuItem.Click += new System.EventHandler(this.расшифроватьФайлToolStripMenuItem_Click);
             // 
             // toolStripComboBox1
             // 
@@ -158,7 +175,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(583, 365);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
@@ -189,6 +206,7 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripMenuItem режимToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem расшифроватьФайлToolStripMenuItem;
     }
 }
 
