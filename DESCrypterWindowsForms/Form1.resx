@@ -120,4 +120,11 @@
   <metadata name="menuStripCrypt.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="toolStripComboBox1.ToolTipText" xml:space="preserve">
+    <value>Выбор режима шифрования DES
+электронный шифроблокнот (Electronic Codebook ) - ECB
+цепочка цифровых блоков (Cipher Block Chaining) - CBC
+цифровая обратная связь (Cipher Feedback) - CFB
+внешняя обратная связь (Output Feedback) - OFB</value>
+  </data>
 </root>
