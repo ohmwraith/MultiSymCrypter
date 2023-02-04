@@ -11,9 +11,9 @@ using System.Security.Cryptography;
 using System.IO;
 
 namespace DESCrypterWindowsForms
-{   
+{
     public partial class Form1 : Form
-    {   
+    {
         public Form1()
         {
             InitializeComponent();
@@ -66,13 +66,13 @@ namespace DESCrypterWindowsForms
                         // Запись зашифрованной информации и очистка буфера памяти
                         streamWriter.Write(stored_text);
                         streamWriter.Flush();
-                        
+
                         // В конце операции шифрования необходимо дополнить заключительный частичный
                         // блок нулями и записать его в файл
                         cryptoStream.FlushFinalBlock();
                     }
                 }
-                richTextBox1.Text = TextFileHandler.load(crypted_filename, DES.IV.Length);
+                cryptedTextBox.Text = TextFileHandler.load(crypted_filename, DES.IV.Length);
                 MessageBox.Show("Шифртекст успешно сохранен!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -84,7 +84,7 @@ namespace DESCrypterWindowsForms
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                richTextBox1.Text = TextFileHandler.load(ofd.FileName, DES.IV.Length);
+                cryptedTextBox.Text = TextFileHandler.load(ofd.FileName, DES.IV.Length);
             }
         }
 
@@ -109,12 +109,18 @@ namespace DESCrypterWindowsForms
                         // данные из последовательности байт в строку
                         using (StreamReader sr = new StreamReader(cryptoStream))
                         {
-                            richTextBox2.Text = sr.ReadToEnd();
+                            decryptedTextBox.Text = sr.ReadToEnd();
                         }
                     }
                     MessageBox.Show("Сообщение успешно расшифровано!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void encryptButton_Click(object sender, EventArgs e)
+        {
+            cryptedTextBox.Text = Encoding.UTF8.GetString(DESEncryptionDecryption.crypt(DES, decryptedTextBox.Text));
+
         }
     }
     public class KeyFileHandler
@@ -153,6 +159,36 @@ namespace DESCrypterWindowsForms
             sw.Write(text);
             fs.Close();
             sw.Close();
+        }
+    }
+    public class DESEncryptionDecryption{
+        public static byte[] crypt(DESCryptoServiceProvider DES, string text)
+        {
+            byte[] crypted;
+            ICryptoTransform transform = DES.CreateEncryptor();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                // Запись случайного вектора инициализации без его шифрования
+                ms.Write(DES.IV, 0, DES.IV.Length);
+                // Создание криптографического потока в режиме записи
+                using (CryptoStream cs = new CryptoStream(ms, transform, CryptoStreamMode.Write))
+                {
+                    // Создание объекта записи текста, который будет преобразовывать текст в
+                    // двоичные данные
+                    using (StreamWriter sw= new StreamWriter(cs))
+                    {
+                        // Запись зашифрованной информации и очистка буфера памяти
+                        sw.Write(text);
+                        sw.Flush();
+                        
+                        // В конце операции шифрования необходимо дополнить заключительный частичный
+                        // блок нулями и записать его в файл
+                        cs.FlushFinalBlock();
+                    }
+                }
+                crypted = ms.ToArray();
+            }
+            return crypted;
         }
     }
 }

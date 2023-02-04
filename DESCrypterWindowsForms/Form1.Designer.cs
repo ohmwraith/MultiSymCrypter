@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.cryptedTextBox = new System.Windows.Forms.RichTextBox();
+            this.decryptedTextBox = new System.Windows.Forms.RichTextBox();
             this.menuStripCrypt = new System.Windows.Forms.MenuStrip();
             this.шифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.создатьКлючToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,31 +49,31 @@
             this.menuStripCrypt.SuspendLayout();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // cryptedTextBox
             // 
-            this.richTextBox1.EnableAutoDragDrop = true;
-            this.richTextBox1.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(27, 117);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox1.Size = new System.Drawing.Size(276, 147);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.cryptedTextBox.EnableAutoDragDrop = true;
+            this.cryptedTextBox.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cryptedTextBox.Location = new System.Drawing.Point(27, 117);
+            this.cryptedTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.cryptedTextBox.Name = "cryptedTextBox";
+            this.cryptedTextBox.ReadOnly = true;
+            this.cryptedTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.cryptedTextBox.Size = new System.Drawing.Size(276, 147);
+            this.cryptedTextBox.TabIndex = 0;
+            this.cryptedTextBox.Text = "";
             // 
-            // richTextBox2
+            // decryptedTextBox
             // 
-            this.richTextBox2.EnableAutoDragDrop = true;
-            this.richTextBox2.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.Location = new System.Drawing.Point(345, 117);
-            this.richTextBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox2.Size = new System.Drawing.Size(276, 147);
-            this.richTextBox2.TabIndex = 1;
-            this.richTextBox2.Text = "";
+            this.decryptedTextBox.EnableAutoDragDrop = true;
+            this.decryptedTextBox.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.decryptedTextBox.Location = new System.Drawing.Point(345, 117);
+            this.decryptedTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.decryptedTextBox.Name = "decryptedTextBox";
+            this.decryptedTextBox.ReadOnly = true;
+            this.decryptedTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.decryptedTextBox.Size = new System.Drawing.Size(276, 147);
+            this.decryptedTextBox.TabIndex = 1;
+            this.decryptedTextBox.Text = "";
             // 
             // menuStripCrypt
             // 
@@ -218,6 +218,7 @@
             this.encryptButton.TabIndex = 6;
             this.encryptButton.Text = "Зашифровать";
             this.encryptButton.UseVisualStyleBackColor = true;
+            this.encryptButton.Click += new System.EventHandler(this.encryptButton_Click);
             // 
             // Form1
             // 
@@ -229,8 +230,8 @@
             this.Controls.Add(this.saveCryptedButton);
             this.Controls.Add(this.decryptButton);
             this.Controls.Add(this.headerLabel1);
-            this.Controls.Add(this.richTextBox2);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.decryptedTextBox);
+            this.Controls.Add(this.cryptedTextBox);
             this.Controls.Add(this.menuStripCrypt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStripCrypt;
@@ -247,8 +248,8 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.RichTextBox cryptedTextBox;
+        private System.Windows.Forms.RichTextBox decryptedTextBox;
         private System.Windows.Forms.MenuStrip menuStripCrypt;
         private System.Windows.Forms.ToolStripMenuItem шифрованиеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem создатьКлючToolStripMenuItem;
