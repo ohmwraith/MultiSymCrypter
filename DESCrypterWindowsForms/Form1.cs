@@ -21,6 +21,7 @@ namespace DESCrypterWindowsForms
         DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
         String stored_text;
         byte[] raw_data;
+        byte[] encrypted_data;
 
         private void создатьКлючToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -49,29 +50,20 @@ namespace DESCrypterWindowsForms
         private void зашифроватьИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK) raw_data = TextFileHandler.load(ofd.FileName, 0);
-            stored_text = Encoding.UTF8.GetString(raw_data);
-
-            ICryptoTransform transform = DES.CreateEncryptor();
-            String crypted_filename = Path.ChangeExtension(ofd.FileName, "crypt");
-            using (FileStream fileStream = new FileStream(crypted_filename, FileMode.OpenOrCreate))
-            {
-                // Запись случайного вектора инициализации без его шифрования
-                fileStream.Write(DES.IV, 0, DES.IV.Length);
-                // Создание криптографического потока в режиме записи
-                using (CryptoStream cryptoStream = new CryptoStream(fileStream, transform, CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(raw_data, 0, raw_data.Length);
-                    cryptoStream.Flush();
-                    cryptoStream.FlushFinalBlock();
-
-                }
-                raw_data = TextFileHandler.load(crypted_filename, DES.IV.Length);
-                cryptedTextBox.Text = Encoding.UTF8.GetString(TextFileHandler.load(crypted_filename, DES.IV.Length));
+            if (ofd.ShowDialog() == DialogResult.OK) {
+                // Чтение файла в массив байтов
+                raw_data = File.ReadAllBytes(ofd.FileName);
+                // Шифрование данных
+                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                // Вывод зашифрованных данных в текстовое поле
+                cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
+                // Сохранение зашифрованных данных в файл
+                File.WriteAllBytes(ofd.FileName + ".crypt", encrypted_data);
                 MessageBox.Show("Шифртекст успешно сохранен!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
+                }
         }
+
+        
 
         private void отобразитьШифрованнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -115,7 +107,7 @@ namespace DESCrypterWindowsForms
 
         private void encryptButton_Click(object sender, EventArgs e)
         {
-            cryptedTextBox.Text = Encoding.UTF8.GetString(DESEncryptionDecryption.crypt(DES, decryptedTextBox.Text));
+            cryptedTextBox.Text = Encoding.UTF8.GetString(DESEncryptionDecryption.crypt(DES, raw_data));
 
         }
     }
@@ -148,19 +140,15 @@ namespace DESCrypterWindowsForms
             Array.Copy(data, offset, result, 0, result.Length);
             return result;
         }
-        public static void save(string text, string filename)
+        public static void save(byte[] data, string filename)
         {
-            FileStream fs = new FileStream(filename, FileMode.Open);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Write(text);
-            fs.Close();
-            sw.Close();
+            File.WriteAllBytes(filename, data);
         }
     }
     public class DESEncryptionDecryption{
-        public static byte[] crypt(DESCryptoServiceProvider DES, string text)
+        public static byte[] crypt(DESCryptoServiceProvider DES, byte[] data)
         {
-            byte[] crypted;
+            byte[] crypted_data;
             ICryptoTransform transform = DES.CreateEncryptor();
             using (MemoryStream ms = new MemoryStream())
             {
@@ -169,22 +157,13 @@ namespace DESCrypterWindowsForms
                 // Создание криптографического потока в режиме записи
                 using (CryptoStream cs = new CryptoStream(ms, transform, CryptoStreamMode.Write))
                 {
-                    // Создание объекта записи текста, который будет преобразовывать текст в
-                    // двоичные данные
-                    using (StreamWriter sw= new StreamWriter(cs))
-                    {
-                        // Запись зашифрованной информации и очистка буфера памяти
-                        sw.Write(text);
-                        sw.Flush();
-                        
-                        // В конце операции шифрования необходимо дополнить заключительный частичный
-                        // блок нулями и записать его в файл
-                        cs.FlushFinalBlock();
-                    }
+                    cs.Write(data, 0, data.Length);
+                    cs.Flush();
+                    cs.FlushFinalBlock();
                 }
-                crypted = ms.ToArray();
+                crypted_data = ms.ToArray();
             }
-            return crypted;
+            return crypted_data;
         }
     }
 }
