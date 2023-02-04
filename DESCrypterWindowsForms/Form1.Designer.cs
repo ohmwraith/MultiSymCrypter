@@ -69,7 +69,6 @@
             this.decryptedTextBox.Location = new System.Drawing.Point(345, 117);
             this.decryptedTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.decryptedTextBox.Name = "decryptedTextBox";
-            this.decryptedTextBox.ReadOnly = true;
             this.decryptedTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.decryptedTextBox.Size = new System.Drawing.Size(276, 147);
             this.decryptedTextBox.TabIndex = 1;

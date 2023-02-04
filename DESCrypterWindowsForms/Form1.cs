@@ -20,6 +20,7 @@ namespace DESCrypterWindowsForms
         }
         DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
         String stored_text;
+        byte[] raw_data;
 
         private void создатьКлючToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -48,7 +49,8 @@ namespace DESCrypterWindowsForms
         private void зашифроватьИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK) stored_text = TextFileHandler.load(ofd.FileName, 0);
+            if (ofd.ShowDialog() == DialogResult.OK) raw_data = TextFileHandler.load(ofd.FileName, 0);
+            stored_text = Encoding.UTF8.GetString(raw_data);
 
             ICryptoTransform transform = DES.CreateEncryptor();
             String crypted_filename = Path.ChangeExtension(ofd.FileName, "crypt");
@@ -72,7 +74,8 @@ namespace DESCrypterWindowsForms
                         cryptoStream.FlushFinalBlock();
                     }
                 }
-                cryptedTextBox.Text = TextFileHandler.load(crypted_filename, DES.IV.Length);
+                raw_data = TextFileHandler.load(crypted_filename, DES.IV.Length);
+                cryptedTextBox.Text = Encoding.UTF8.GetString(TextFileHandler.load(crypted_filename, DES.IV.Length));
                 MessageBox.Show("Шифртекст успешно сохранен!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -84,7 +87,8 @@ namespace DESCrypterWindowsForms
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                cryptedTextBox.Text = TextFileHandler.load(ofd.FileName, DES.IV.Length);
+                raw_data = TextFileHandler.load(ofd.FileName, DES.IV.Length);
+                cryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
             }
         }
 
@@ -142,15 +146,13 @@ namespace DESCrypterWindowsForms
     }
     public class TextFileHandler
     {
-        public static string load(string filename, int offset)
+        public static byte[] load(string filename, int offset)
         {
             FileStream fs = new FileStream(filename, FileMode.Open);
-            fs.Seek(offset, SeekOrigin.Begin);
-            StreamReader sr = new StreamReader(fs);
-            string text = sr.ReadToEnd();
+            byte[] data = new byte[fs.Length - offset];
+            fs.Read(data, offset, data.Length);
             fs.Close();
-            sr.Close();
-            return text;
+            return data;
         }
         public static void save(string text, string filename)
         {
