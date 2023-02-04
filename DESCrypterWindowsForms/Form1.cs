@@ -71,7 +71,7 @@ namespace DESCrypterWindowsForms
                 cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
                 // Сохранение зашифрованных данных в файл
                 File.WriteAllBytes(ofd.FileName + ".crypt", encrypted_data);
-                MessageBox.Show("Шифртекст успешно сохранен!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Файл успешно зашифрован!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
         }
 
@@ -91,6 +91,7 @@ namespace DESCrypterWindowsForms
         private void расшифроватьФайлToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK) {
                 // Чтение файла в массив байтов
                 encrypted_data = File.ReadAllBytes(ofd.FileName);
@@ -98,21 +99,49 @@ namespace DESCrypterWindowsForms
                 raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
                 // Вывод расшифрованных данных в текстовое поле
                 decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
-                MessageBox.Show("Сообщение успешно расшифровано!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Файл успешно расшифрован !", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void encryptButton_Click(object sender, EventArgs e)
         {
-            encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
-            cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
+            if (decryptedTextBox.Text != "")
+            {
+                raw_data = Encoding.UTF8.GetBytes(decryptedTextBox.Text);
+                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
+            } else
+            {
+                MessageBox.Show("Сначала введите текст в поле", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
         }
 
         private void decryptButton_Click(object sender, EventArgs e)
         {
-            raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
-            decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
+            if (cryptedTextBox.Text != "")
+            {
+                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
+            }
+            else
+            {
+                MessageBox.Show("Сначала загрузите зашифрованный файл", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void saveCryptedButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".crypt";
+            if (sfd.ShowDialog() == DialogResult.OK) File.WriteAllBytes(sfd.FileName, encrypted_data);
+        }
+
+        private void saveDecryptedButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".txt";
+            if (sfd.ShowDialog() == DialogResult.OK) File.WriteAllText(sfd.FileName, decryptedTextBox.Text);
         }
     }
     public class DESEncryptionDecryption{

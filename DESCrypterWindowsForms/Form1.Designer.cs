@@ -44,7 +44,7 @@
             this.headerLabel1 = new System.Windows.Forms.Label();
             this.decryptButton = new System.Windows.Forms.Button();
             this.saveCryptedButton = new System.Windows.Forms.Button();
-            this.saveDecryptButton = new System.Windows.Forms.Button();
+            this.saveDecryptedButton = new System.Windows.Forms.Button();
             this.encryptButton = new System.Windows.Forms.Button();
             this.menuStripCrypt.SuspendLayout();
             this.SuspendLayout();
@@ -198,16 +198,18 @@
             this.saveCryptedButton.TabIndex = 5;
             this.saveCryptedButton.Text = "Сохранить";
             this.saveCryptedButton.UseVisualStyleBackColor = true;
+            this.saveCryptedButton.Click += new System.EventHandler(this.saveCryptedButton_Click);
             // 
-            // saveDecryptButton
+            // saveDecryptedButton
             // 
-            this.saveDecryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveDecryptButton.Location = new System.Drawing.Point(487, 269);
-            this.saveDecryptButton.Name = "saveDecryptButton";
-            this.saveDecryptButton.Size = new System.Drawing.Size(134, 38);
-            this.saveDecryptButton.TabIndex = 7;
-            this.saveDecryptButton.Text = "Сохранить";
-            this.saveDecryptButton.UseVisualStyleBackColor = true;
+            this.saveDecryptedButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveDecryptedButton.Location = new System.Drawing.Point(487, 269);
+            this.saveDecryptedButton.Name = "saveDecryptedButton";
+            this.saveDecryptedButton.Size = new System.Drawing.Size(134, 38);
+            this.saveDecryptedButton.TabIndex = 7;
+            this.saveDecryptedButton.Text = "Сохранить";
+            this.saveDecryptedButton.UseVisualStyleBackColor = true;
+            this.saveDecryptedButton.Click += new System.EventHandler(this.saveDecryptedButton_Click);
             // 
             // encryptButton
             // 
@@ -225,7 +227,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(643, 333);
-            this.Controls.Add(this.saveDecryptButton);
+            this.Controls.Add(this.saveDecryptedButton);
             this.Controls.Add(this.encryptButton);
             this.Controls.Add(this.saveCryptedButton);
             this.Controls.Add(this.decryptButton);
@@ -263,7 +265,7 @@
         private System.Windows.Forms.ToolStripMenuItem расшифроватьФайлToolStripMenuItem;
         private System.Windows.Forms.Button decryptButton;
         private System.Windows.Forms.Button saveCryptedButton;
-        private System.Windows.Forms.Button saveDecryptButton;
+        private System.Windows.Forms.Button saveDecryptedButton;
         private System.Windows.Forms.Button encryptButton;
     }
 }
