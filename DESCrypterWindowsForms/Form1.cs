@@ -30,7 +30,7 @@ namespace DESCrypterWindowsForms
             sfd.DefaultExt = ".bin";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                KeyFileHandler.save(DES.Key, sfd.FileName);
+                File.WriteAllBytes(sfd.FileName, DES.Key);
                 MessageBox.Show("Ключ успешно сохранен", "Создание ключа", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -41,8 +41,20 @@ namespace DESCrypterWindowsForms
             ofd.Filter = "key files (*.bin)|*.bin|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                DES.Key = KeyFileHandler.load(ofd.FileName);
-                MessageBox.Show("Ключ успешно загружен", "Загрузка ключа", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Проверка, является ли выбранный файл ключом
+                try
+                {
+                    byte[] key = new byte[8];
+                    key = File.ReadAllBytes(ofd.FileName);
+                    DES.Key = key;
+                    MessageBox.Show("Ключ успешно загружен", "Загрузка ключа", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (System.Exception)
+                {
+                    // Если файл не является ключом, то выводится сообщение об ошибке
+                    MessageBox.Show("Выбранный файл не является ключом", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
             }
 
         }
@@ -94,23 +106,6 @@ namespace DESCrypterWindowsForms
         {
             cryptedTextBox.Text = Encoding.UTF8.GetString(DESEncryptionDecryption.crypt(DES, raw_data));
 
-        }
-    }
-    public class KeyFileHandler
-    {
-        public static byte[] load(string filename)
-        {
-            byte[] key = new byte[8];
-            FileStream fs = new FileStream(filename, FileMode.Open);
-            fs.Read(key, 0, key.Length);
-            fs.Close();
-            return key;
-        }
-        public static void save(byte[] key, string filename)
-        {
-            FileStream fs = new FileStream(filename, FileMode.OpenOrCreate);
-            fs.Write(key, 0, key.Length);
-            fs.Close();
         }
     }
     public class TextFileHandler
