@@ -187,6 +187,7 @@
             this.decryptButton.TabIndex = 4;
             this.decryptButton.Text = "Расшифровать";
             this.decryptButton.UseVisualStyleBackColor = true;
+            this.decryptButton.Click += new System.EventHandler(this.decryptButton_Click);
             // 
             // saveCryptedButton
             // 

@@ -83,7 +83,7 @@ namespace DESCrypterWindowsForms
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                raw_data = TextFileHandler.load(ofd.FileName, DES.IV.Length);
+                raw_data = File.ReadAllBytes(ofd.FileName);
                 cryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
             }
         }
@@ -104,25 +104,15 @@ namespace DESCrypterWindowsForms
 
         private void encryptButton_Click(object sender, EventArgs e)
         {
-            cryptedTextBox.Text = Encoding.UTF8.GetString(DESEncryptionDecryption.crypt(DES, raw_data));
+            encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+            cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
 
         }
-    }
-    public class TextFileHandler
-    {
-        public static byte[] load(string filename, int offset)
+
+        private void decryptButton_Click(object sender, EventArgs e)
         {
-            // Чтение файла в массив байтов
-            byte[] data = File.ReadAllBytes(filename);
-            // Создание массива для хранения данных без вектора инициализации
-            byte[] result = new byte[data.Length - offset];
-            // Копирование данных без вектора инициализации
-            Array.Copy(data, offset, result, 0, result.Length);
-            return result;
-        }
-        public static void save(byte[] data, string filename)
-        {
-            File.WriteAllBytes(filename, data);
+            raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+            decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
         }
     }
     public class DESEncryptionDecryption{
