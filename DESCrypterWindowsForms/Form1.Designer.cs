@@ -41,7 +41,11 @@
             this.расшифроватьФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.режимToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
+            this.headerLabel1 = new System.Windows.Forms.Label();
+            this.decryptButton = new System.Windows.Forms.Button();
+            this.saveCryptedButton = new System.Windows.Forms.Button();
+            this.saveDecryptButton = new System.Windows.Forms.Button();
+            this.encryptButton = new System.Windows.Forms.Button();
             this.menuStripCrypt.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,11 +53,12 @@
             // 
             this.richTextBox1.EnableAutoDragDrop = true;
             this.richTextBox1.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(35, 144);
+            this.richTextBox1.Location = new System.Drawing.Point(27, 117);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox1.Size = new System.Drawing.Size(200, 165);
+            this.richTextBox1.Size = new System.Drawing.Size(276, 147);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -61,11 +66,12 @@
             // 
             this.richTextBox2.EnableAutoDragDrop = true;
             this.richTextBox2.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.Location = new System.Drawing.Point(319, 144);
+            this.richTextBox2.Location = new System.Drawing.Point(345, 117);
+            this.richTextBox2.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
             this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox2.Size = new System.Drawing.Size(201, 165);
+            this.richTextBox2.Size = new System.Drawing.Size(276, 147);
             this.richTextBox2.TabIndex = 1;
             this.richTextBox2.Text = "";
             // 
@@ -80,7 +86,8 @@
             this.режимToolStripMenuItem});
             this.menuStripCrypt.Location = new System.Drawing.Point(0, 0);
             this.menuStripCrypt.Name = "menuStripCrypt";
-            this.menuStripCrypt.Size = new System.Drawing.Size(583, 35);
+            this.menuStripCrypt.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStripCrypt.Size = new System.Drawing.Size(643, 31);
             this.menuStripCrypt.TabIndex = 2;
             this.menuStripCrypt.Text = "Шифрование";
             // 
@@ -91,27 +98,27 @@
             this.зашифроватьИнформациюToolStripMenuItem,
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem});
             this.шифрованиеToolStripMenuItem.Name = "шифрованиеToolStripMenuItem";
-            this.шифрованиеToolStripMenuItem.Size = new System.Drawing.Size(134, 31);
+            this.шифрованиеToolStripMenuItem.Size = new System.Drawing.Size(106, 27);
             this.шифрованиеToolStripMenuItem.Text = "Шифрование";
             // 
             // создатьКлючToolStripMenuItem
             // 
             this.создатьКлючToolStripMenuItem.Name = "создатьКлючToolStripMenuItem";
-            this.создатьКлючToolStripMenuItem.Size = new System.Drawing.Size(442, 28);
+            this.создатьКлючToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
             this.создатьКлючToolStripMenuItem.Text = "Создать ключ";
             this.создатьКлючToolStripMenuItem.Click += new System.EventHandler(this.создатьКлючToolStripMenuItem_Click);
             // 
             // зашифроватьИнформациюToolStripMenuItem
             // 
             this.зашифроватьИнформациюToolStripMenuItem.Name = "зашифроватьИнформациюToolStripMenuItem";
-            this.зашифроватьИнформациюToolStripMenuItem.Size = new System.Drawing.Size(442, 28);
+            this.зашифроватьИнформациюToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
             this.зашифроватьИнформациюToolStripMenuItem.Text = "Зашифровать информацию";
             this.зашифроватьИнформациюToolStripMenuItem.Click += new System.EventHandler(this.зашифроватьИнформациюToolStripMenuItem_Click);
             // 
             // отобразитьШифрованнуюИнформациюToolStripMenuItem
             // 
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Name = "отобразитьШифрованнуюИнформациюToolStripMenuItem";
-            this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Size = new System.Drawing.Size(442, 28);
+            this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Text = "Отобразить шифрованную информацию";
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Click += new System.EventHandler(this.отобразитьШифрованнуюИнформациюToolStripMenuItem_Click);
             // 
@@ -121,20 +128,20 @@
             this.загрузитьКлючToolStripMenuItem,
             this.расшифроватьФайлToolStripMenuItem});
             this.дешифрованиеToolStripMenuItem.Name = "дешифрованиеToolStripMenuItem";
-            this.дешифрованиеToolStripMenuItem.Size = new System.Drawing.Size(157, 31);
+            this.дешифрованиеToolStripMenuItem.Size = new System.Drawing.Size(125, 27);
             this.дешифрованиеToolStripMenuItem.Text = "Дешифрование";
             // 
             // загрузитьКлючToolStripMenuItem
             // 
             this.загрузитьКлючToolStripMenuItem.Name = "загрузитьКлючToolStripMenuItem";
-            this.загрузитьКлючToolStripMenuItem.Size = new System.Drawing.Size(277, 28);
+            this.загрузитьКлючToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.загрузитьКлючToolStripMenuItem.Text = "Загрузить ключ";
             this.загрузитьКлючToolStripMenuItem.Click += new System.EventHandler(this.загрузитьКлючToolStripMenuItem_Click);
             // 
             // расшифроватьФайлToolStripMenuItem
             // 
             this.расшифроватьФайлToolStripMenuItem.Name = "расшифроватьФайлToolStripMenuItem";
-            this.расшифроватьФайлToolStripMenuItem.Size = new System.Drawing.Size(277, 28);
+            this.расшифроватьФайлToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.расшифроватьФайлToolStripMenuItem.Text = "Расшифровать файл";
             this.расшифроватьФайлToolStripMenuItem.Click += new System.EventHandler(this.расшифроватьФайлToolStripMenuItem_Click);
             // 
@@ -151,37 +158,83 @@
             "ECB",
             "OFB"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 31);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(92, 27);
             this.toolStripComboBox1.ToolTipText = resources.GetString("toolStripComboBox1.ToolTipText");
             // 
             // режимToolStripMenuItem
             // 
             this.режимToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.режимToolStripMenuItem.Name = "режимToolStripMenuItem";
-            this.режимToolStripMenuItem.Size = new System.Drawing.Size(85, 31);
-            this.режимToolStripMenuItem.Text = "Режим:";
+            this.режимToolStripMenuItem.Size = new System.Drawing.Size(64, 27);
+            this.режимToolStripMenuItem.Text = "Режим";
             // 
-            // label1
+            // headerLabel1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Metropolis", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(499, 80);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "DESCrypter";
+            this.headerLabel1.AutoSize = true;
+            this.headerLabel1.Font = new System.Drawing.Font("Metropolis", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.headerLabel1.Location = new System.Drawing.Point(16, 37);
+            this.headerLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.headerLabel1.Name = "headerLabel1";
+            this.headerLabel1.Size = new System.Drawing.Size(398, 64);
+            this.headerLabel1.TabIndex = 3;
+            this.headerLabel1.Text = "DESCrypter";
+            // 
+            // decryptButton
+            // 
+            this.decryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.decryptButton.Location = new System.Drawing.Point(27, 269);
+            this.decryptButton.Name = "decryptButton";
+            this.decryptButton.Size = new System.Drawing.Size(134, 38);
+            this.decryptButton.TabIndex = 4;
+            this.decryptButton.Text = "Расшифровать";
+            this.decryptButton.UseVisualStyleBackColor = true;
+            // 
+            // saveCryptedButton
+            // 
+            this.saveCryptedButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveCryptedButton.Location = new System.Drawing.Point(169, 269);
+            this.saveCryptedButton.Name = "saveCryptedButton";
+            this.saveCryptedButton.Size = new System.Drawing.Size(134, 38);
+            this.saveCryptedButton.TabIndex = 5;
+            this.saveCryptedButton.Text = "Сохранить";
+            this.saveCryptedButton.UseVisualStyleBackColor = true;
+            // 
+            // saveDecryptButton
+            // 
+            this.saveDecryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveDecryptButton.Location = new System.Drawing.Point(487, 269);
+            this.saveDecryptButton.Name = "saveDecryptButton";
+            this.saveDecryptButton.Size = new System.Drawing.Size(134, 38);
+            this.saveDecryptButton.TabIndex = 7;
+            this.saveDecryptButton.Text = "Сохранить";
+            this.saveDecryptButton.UseVisualStyleBackColor = true;
+            // 
+            // encryptButton
+            // 
+            this.encryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.encryptButton.Location = new System.Drawing.Point(345, 269);
+            this.encryptButton.Name = "encryptButton";
+            this.encryptButton.Size = new System.Drawing.Size(134, 38);
+            this.encryptButton.TabIndex = 6;
+            this.encryptButton.Text = "Зашифровать";
+            this.encryptButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 365);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(643, 333);
+            this.Controls.Add(this.saveDecryptButton);
+            this.Controls.Add(this.encryptButton);
+            this.Controls.Add(this.saveCryptedButton);
+            this.Controls.Add(this.decryptButton);
+            this.Controls.Add(this.headerLabel1);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.menuStripCrypt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStripCrypt;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "DES Шифрование";
@@ -205,8 +258,12 @@
         private System.Windows.Forms.ToolStripMenuItem загрузитьКлючToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripMenuItem режимToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label headerLabel1;
         private System.Windows.Forms.ToolStripMenuItem расшифроватьФайлToolStripMenuItem;
+        private System.Windows.Forms.Button decryptButton;
+        private System.Windows.Forms.Button saveCryptedButton;
+        private System.Windows.Forms.Button saveDecryptButton;
+        private System.Windows.Forms.Button encryptButton;
     }
 }
 
