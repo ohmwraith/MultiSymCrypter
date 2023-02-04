@@ -159,6 +159,7 @@
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(92, 27);
             this.toolStripComboBox1.ToolTipText = resources.GetString("toolStripComboBox1.ToolTipText");
+            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
             // режимToolStripMenuItem
             // 

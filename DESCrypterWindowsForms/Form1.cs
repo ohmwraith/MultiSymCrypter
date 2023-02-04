@@ -17,9 +17,9 @@ namespace DESCrypterWindowsForms
         public Form1()
         {
             InitializeComponent();
+            toolStripComboBox1.SelectedIndex = 0;
         }
         DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
-        String stored_text;
         byte[] raw_data;
         byte[] encrypted_data;
 
@@ -142,6 +142,17 @@ namespace DESCrypterWindowsForms
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.DefaultExt = ".txt";
             if (sfd.ShowDialog() == DialogResult.OK) File.WriteAllText(sfd.FileName, decryptedTextBox.Text);
+        }
+
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (toolStripComboBox1.SelectedIndex)
+            {
+                case 0: DES.Mode = CipherMode.CBC; break;
+                case 1: DES.Mode = CipherMode.CFB; break;              
+                case 2: DES.Mode = CipherMode.ECB; break;
+                case 3: DES.Mode = CipherMode.OFB; break;
+            }
         }
     }
     public class DESEncryptionDecryption{
