@@ -79,29 +79,14 @@ namespace DESCrypterWindowsForms
         private void расшифроватьФайлToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                using (FileStream fileStream = new FileStream(ofd.FileName, FileMode.Open))
-                {
-                    // Чтение вектора инициализации
-                    Byte[] iv = new byte[DES.IV.Length];
-                    fileStream.Read(iv, 0, iv.Length);
-                    DES.IV = iv;
-                    // Создание интерфейса преобразования для дешифрования по алгоритму DES
-                    ICryptoTransform transform = DES.CreateDecryptor();
-                    // Создание криптографического потока в режиме записи. Этот поток будет
-                    // декодировать двоичные данные сразу после их чтения из файла
-                    using (CryptoStream cryptoStream = new CryptoStream(fileStream, transform, CryptoStreamMode.Read))
-                    {
-                        // Создание объекта чтения из текста. Он будет преобразовывать дешифрованные
-                        // данные из последовательности байт в строку
-                        using (StreamReader sr = new StreamReader(cryptoStream))
-                        {
-                            decryptedTextBox.Text = sr.ReadToEnd();
-                        }
-                    }
-                    MessageBox.Show("Сообщение успешно расшифровано!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+            if (ofd.ShowDialog() == DialogResult.OK) {
+                // Чтение файла в массив байтов
+                encrypted_data = File.ReadAllBytes(ofd.FileName);
+                // Расшифрование данных
+                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                // Вывод расшифрованных данных в текстовое поле
+                decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
+                MessageBox.Show("Сообщение успешно расшифровано!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -164,6 +149,28 @@ namespace DESCrypterWindowsForms
                 crypted_data = ms.ToArray();
             }
             return crypted_data;
+        }
+        public static byte[] decrypt(DESCryptoServiceProvider DES, byte[] data)
+        {
+            byte[] decrypted_data;
+            using (MemoryStream ms = new MemoryStream(data))
+            {
+                // Чтение вектора инициализации из потока
+                Byte[] iv = new byte[DES.IV.Length];
+                ms.Read(iv, 0, iv.Length);
+                DES.IV = iv;
+                // Создание интерфейса преобразования для дешифрования по алгоритму DES
+                ICryptoTransform transform = DES.CreateDecryptor();
+                // Создание криптографического потока в режиме записи. Этот поток будет
+                // декодировать двоичные данные сразу после их чтения из потока
+                using (CryptoStream cs = new CryptoStream(ms, transform, CryptoStreamMode.Read))
+                {
+                    decrypted_data = new byte[ms.Length];
+                    cs.Read(decrypted_data, 0, decrypted_data.Length);
+                }
+            return decrypted_data;
+            }
+
         }
     }
 }
