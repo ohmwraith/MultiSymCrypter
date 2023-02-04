@@ -61,18 +61,10 @@ namespace DESCrypterWindowsForms
                 // Создание криптографического потока в режиме записи
                 using (CryptoStream cryptoStream = new CryptoStream(fileStream, transform, CryptoStreamMode.Write))
                 {
-                    // Создание объекта записи текста, который будет преобразовывать текст в
-                    // двоичные данные
-                    using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
-                    {
-                        // Запись зашифрованной информации и очистка буфера памяти
-                        streamWriter.Write(stored_text);
-                        streamWriter.Flush();
+                    cryptoStream.Write(raw_data, 0, raw_data.Length);
+                    cryptoStream.Flush();
+                    cryptoStream.FlushFinalBlock();
 
-                        // В конце операции шифрования необходимо дополнить заключительный частичный
-                        // блок нулями и записать его в файл
-                        cryptoStream.FlushFinalBlock();
-                    }
                 }
                 raw_data = TextFileHandler.load(crypted_filename, DES.IV.Length);
                 cryptedTextBox.Text = Encoding.UTF8.GetString(TextFileHandler.load(crypted_filename, DES.IV.Length));
@@ -148,11 +140,13 @@ namespace DESCrypterWindowsForms
     {
         public static byte[] load(string filename, int offset)
         {
-            FileStream fs = new FileStream(filename, FileMode.Open);
-            byte[] data = new byte[fs.Length - offset];
-            fs.Read(data, offset, data.Length);
-            fs.Close();
-            return data;
+            // Чтение файла в массив байтов
+            byte[] data = File.ReadAllBytes(filename);
+            // Создание массива для хранения данных без вектора инициализации
+            byte[] result = new byte[data.Length - offset];
+            // Копирование данных без вектора инициализации
+            Array.Copy(data, offset, result, 0, result.Length);
+            return result;
         }
         public static void save(string text, string filename)
         {
