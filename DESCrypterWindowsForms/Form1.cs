@@ -172,15 +172,17 @@ namespace DESCrypterWindowsForms
             }
             catch (System.Security.Cryptography.CryptographicException)
             {
+                inFileStream.Close();
+                outFileStream.Close();
                 MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             inFileStream.Close();
             outFileStream.Close();
             encrypted_data = File.ReadAllBytes(sfd.FileName);
             cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
             MessageBox.Show("Файл успешно зашифрован!", "Поточное шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void шифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
@@ -288,10 +290,11 @@ namespace DESCrypterWindowsForms
             }
             catch (System.Security.Cryptography.CryptographicException)
             {
+                inFileStream.Close();
+                outFileStream.Close();
                 MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             inFileStream.Close();
             outFileStream.Close();
             raw_data = File.ReadAllBytes(sfd.FileName);
