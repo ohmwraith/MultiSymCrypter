@@ -157,7 +157,7 @@ namespace DESCrypterWindowsForms
             outFileStream.Close();
             encrypted_data = File.ReadAllBytes(sfd.FileName);
             cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
-            MessageBox.Show("Файл успешно зашифрован!", "Потоковое шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Файл успешно зашифрован!", "Поточное шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void шифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
@@ -191,6 +191,46 @@ namespace DESCrypterWindowsForms
                 decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
                 MessageBox.Show("Файл успешно расшифрован !", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void поточноеДешифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            FileStream inFileStream = new FileStream(ofd.FileName, FileMode.Open);
+            FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
+
+            Byte[] iv = new byte[DES.IV.Length];
+            inFileStream.Read(iv, 0, iv.Length);
+            DES.IV = iv;
+
+            const int blockSize = 1024;
+            ICryptoTransform transform = DES.CreateDecryptor();
+
+            using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
+            {
+                byte[] buffer = new byte[blockSize];
+                int bytesRead;
+
+                // Потоковое чтение и запись файла по кускам
+                while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0) {
+                    cs.Write(buffer, 0, bytesRead);
+                }
+                
+
+                cs.Flush();
+                cs.FlushFinalBlock();
+            }
+
+            inFileStream.Close();
+            outFileStream.Close();
+            raw_data = File.ReadAllBytes(sfd.FileName);
+            decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
+            MessageBox.Show("Файл успешно расшифрован!", "Поточное дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
     public class DESEncryptionDecryption{

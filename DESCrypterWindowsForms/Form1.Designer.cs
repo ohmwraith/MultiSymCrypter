@@ -177,6 +177,7 @@
             this.поточноеДешифрованиеToolStripMenuItem.Name = "поточноеДешифрованиеToolStripMenuItem";
             this.поточноеДешифрованиеToolStripMenuItem.Size = new System.Drawing.Size(250, 24);
             this.поточноеДешифрованиеToolStripMenuItem.Text = "Поточное дешифрование";
+            this.поточноеДешифрованиеToolStripMenuItem.Click += new System.EventHandler(this.поточноеДешифрованиеToolStripMenuItem_Click);
             // 
             // toolStripComboBox1
             // 
