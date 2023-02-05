@@ -45,6 +45,8 @@
             this.поточноеДешифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.режимToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
+            this.дополнениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.headerLabel1 = new System.Windows.Forms.Label();
             this.decryptButton = new System.Windows.Forms.Button();
             this.saveCryptedButton = new System.Windows.Forms.Button();
@@ -85,7 +87,9 @@
             this.шифрованиеToolStripMenuItem,
             this.дешифрованиеToolStripMenuItem,
             this.toolStripComboBox1,
-            this.режимToolStripMenuItem});
+            this.режимToolStripMenuItem,
+            this.toolStripComboBox2,
+            this.дополнениеToolStripMenuItem});
             this.menuStripCrypt.Location = new System.Drawing.Point(0, 0);
             this.menuStripCrypt.Name = "menuStripCrypt";
             this.menuStripCrypt.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
@@ -203,6 +207,25 @@
             this.режимToolStripMenuItem.Size = new System.Drawing.Size(64, 27);
             this.режимToolStripMenuItem.Text = "Режим";
             // 
+            // toolStripComboBox2
+            // 
+            this.toolStripComboBox2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripComboBox2.Items.AddRange(new object[] {
+            "ISO10126",
+            "None",
+            "PKCS7",
+            "Zeros"});
+            this.toolStripComboBox2.Name = "toolStripComboBox2";
+            this.toolStripComboBox2.Size = new System.Drawing.Size(121, 27);
+            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
+            // 
+            // дополнениеToolStripMenuItem
+            // 
+            this.дополнениеToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.дополнениеToolStripMenuItem.Name = "дополнениеToolStripMenuItem";
+            this.дополнениеToolStripMenuItem.Size = new System.Drawing.Size(104, 27);
+            this.дополнениеToolStripMenuItem.Text = "Дополнение";
+            // 
             // headerLabel1
             // 
             this.headerLabel1.AutoSize = true;
@@ -307,6 +330,8 @@
         private System.Windows.Forms.ToolStripMenuItem поточноеШифрованиеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem дешифрованиеВПамятиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem поточноеДешифрованиеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
+        private System.Windows.Forms.ToolStripMenuItem дополнениеToolStripMenuItem;
     }
 }
 

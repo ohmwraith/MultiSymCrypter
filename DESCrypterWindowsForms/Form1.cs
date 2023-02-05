@@ -18,6 +18,7 @@ namespace DESCrypterWindowsForms
         {
             InitializeComponent();
             toolStripComboBox1.SelectedIndex = 0;
+            toolStripComboBox2.SelectedIndex = 0;
         }
         DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
         byte[] raw_data;
@@ -231,6 +232,19 @@ namespace DESCrypterWindowsForms
             raw_data = File.ReadAllBytes(sfd.FileName);
             decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
             MessageBox.Show("Файл успешно расшифрован!", "Поточное дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (toolStripComboBox2.SelectedIndex)
+            {
+                case 0: DES.Padding = PaddingMode.ISO10126; break;
+                case 1: DES.Padding = PaddingMode.None; break;
+                case 2: DES.Padding = PaddingMode.PKCS7; break;
+                case 3: DES.Padding = PaddingMode.Zeros; break;
+            }
+
+
         }
     }
     public class DESEncryptionDecryption{
