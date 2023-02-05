@@ -35,8 +35,9 @@
             this.шифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.создатьКлючToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зашифроватьИнформациюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.шифрованиеВПамятиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.поточноеШифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.потоковоеШифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.дешифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.загрузитьКлючToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.расшифроватьФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +96,6 @@
             this.шифрованиеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.создатьКлючToolStripMenuItem,
             this.зашифроватьИнформациюToolStripMenuItem,
-            this.потоковоеШифрованиеToolStripMenuItem,
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem});
             this.шифрованиеToolStripMenuItem.Name = "шифрованиеToolStripMenuItem";
             this.шифрованиеToolStripMenuItem.Size = new System.Drawing.Size(106, 27);
@@ -110,10 +110,26 @@
             // 
             // зашифроватьИнформациюToolStripMenuItem
             // 
+            this.зашифроватьИнформациюToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.шифрованиеВПамятиToolStripMenuItem,
+            this.поточноеШифрованиеToolStripMenuItem});
             this.зашифроватьИнформациюToolStripMenuItem.Name = "зашифроватьИнформациюToolStripMenuItem";
             this.зашифроватьИнформациюToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
             this.зашифроватьИнформациюToolStripMenuItem.Text = "Зашифровать информацию";
-            this.зашифроватьИнформациюToolStripMenuItem.Click += new System.EventHandler(this.зашифроватьИнформациюToolStripMenuItem_Click);
+            // 
+            // шифрованиеВПамятиToolStripMenuItem
+            // 
+            this.шифрованиеВПамятиToolStripMenuItem.Name = "шифрованиеВПамятиToolStripMenuItem";
+            this.шифрованиеВПамятиToolStripMenuItem.Size = new System.Drawing.Size(234, 24);
+            this.шифрованиеВПамятиToolStripMenuItem.Text = "Шифрование в памяти";
+            this.шифрованиеВПамятиToolStripMenuItem.Click += new System.EventHandler(this.шифрованиеВПамятиToolStripMenuItem_Click);
+            // 
+            // поточноеШифрованиеToolStripMenuItem
+            // 
+            this.поточноеШифрованиеToolStripMenuItem.Name = "поточноеШифрованиеToolStripMenuItem";
+            this.поточноеШифрованиеToolStripMenuItem.Size = new System.Drawing.Size(234, 24);
+            this.поточноеШифрованиеToolStripMenuItem.Text = "Поточное шифрование";
+            this.поточноеШифрованиеToolStripMenuItem.Click += new System.EventHandler(this.поточноеШифрованиеToolStripMenuItem_Click);
             // 
             // отобразитьШифрованнуюИнформациюToolStripMenuItem
             // 
@@ -121,13 +137,6 @@
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Text = "Отобразить шифрованную информацию";
             this.отобразитьШифрованнуюИнформациюToolStripMenuItem.Click += new System.EventHandler(this.отобразитьШифрованнуюИнформациюToolStripMenuItem_Click);
-            // 
-            // потоковоеШифрованиеToolStripMenuItem
-            // 
-            this.потоковоеШифрованиеToolStripMenuItem.Name = "потоковоеШифрованиеToolStripMenuItem";
-            this.потоковоеШифрованиеToolStripMenuItem.Size = new System.Drawing.Size(349, 24);
-            this.потоковоеШифрованиеToolStripMenuItem.Text = "Потоковое шифрование";
-            this.потоковоеШифрованиеToolStripMenuItem.Click += new System.EventHandler(this.потоковоеШифрованиеToolStripMenuItem_Click);
             // 
             // дешифрованиеToolStripMenuItem
             // 
@@ -276,7 +285,8 @@
         private System.Windows.Forms.Button saveCryptedButton;
         private System.Windows.Forms.Button saveDecryptedButton;
         private System.Windows.Forms.Button encryptButton;
-        private System.Windows.Forms.ToolStripMenuItem потоковоеШифрованиеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem шифрованиеВПамятиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem поточноеШифрованиеToolStripMenuItem;
     }
 }
 

@@ -58,23 +58,6 @@ namespace DESCrypterWindowsForms
             }
 
         }
-
-        private void зашифроватьИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK) {
-                // Чтение файла в массив байтов
-                raw_data = File.ReadAllBytes(ofd.FileName);
-                // Шифрование данных
-                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
-                // Вывод зашифрованных данных в текстовое поле
-                cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
-                // Сохранение зашифрованных данных в файл
-                File.WriteAllBytes(ofd.FileName + ".crypt", encrypted_data);
-                MessageBox.Show("Файл успешно зашифрован!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-        }
-
         
 
         private void отобразитьШифрованнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
@@ -155,7 +138,8 @@ namespace DESCrypterWindowsForms
             }
         }
 
-        private void потоковоеШифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void поточноеШифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() != DialogResult.OK) return;
@@ -178,7 +162,7 @@ namespace DESCrypterWindowsForms
 
                 // Потоковое чтение и запись файла по кускам
                 while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0) cs.Write(buffer, 0, bytesRead);
-                
+
                 cs.Flush();
                 cs.FlushFinalBlock();
             }
@@ -188,6 +172,23 @@ namespace DESCrypterWindowsForms
             encrypted_data = File.ReadAllBytes(sfd.FileName);
             cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
             MessageBox.Show("Файл успешно зашифрован!", "Потоковое шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void шифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                // Чтение файла в массив байтов
+                raw_data = File.ReadAllBytes(ofd.FileName);
+                // Шифрование данных
+                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                // Вывод зашифрованных данных в текстовое поле
+                cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
+                // Сохранение зашифрованных данных в файл
+                File.WriteAllBytes(ofd.FileName + ".crypt", encrypted_data);
+                MessageBox.Show("Файл успешно зашифрован!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
     public class DESEncryptionDecryption{
