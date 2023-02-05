@@ -91,7 +91,15 @@ namespace DESCrypterWindowsForms
         {
             if (cryptedTextBox.Text != "" && encrypted_data.Length != 0)
             {
-                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                try {
+                    raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                }
+                catch (System.Security.Cryptography.CryptographicException)
+                {
+                    raw_data = null;
+                    MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
             }
             else
@@ -119,7 +127,7 @@ namespace DESCrypterWindowsForms
             switch (toolStripComboBox1.SelectedIndex)
             {
                 case 0: DES.Mode = CipherMode.CBC; break;
-                case 1: DES.Mode = CipherMode.CFB; break;              
+                case 1: DES.Mode = CipherMode.CFB; break;        
                 case 2: DES.Mode = CipherMode.ECB; break;
                 case 3: DES.Mode = CipherMode.OFB; break;
             }
@@ -140,18 +148,32 @@ namespace DESCrypterWindowsForms
             FileStream inFileStream = new FileStream(ofd.FileName, FileMode.Open);
             FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
 
-            outFileStream.Write(DES.IV, 0, DES.IV.Length);
-
-            using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
+            // Проверка кратности для режима без дополнений
+            if (DES.Padding == PaddingMode.None & inFileStream.Length % 64 != 0)
             {
-                byte[] buffer = new byte[blockSize];
-                int bytesRead;
+                MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-                // Потоковое чтение и запись файла по кускам
-                while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0) cs.Write(buffer, 0, bytesRead);
+            outFileStream.Write(DES.IV, 0, DES.IV.Length);
+            try
+            {
+                using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
+                {
+                    byte[] buffer = new byte[blockSize];
+                    int bytesRead;
 
-                cs.Flush();
-                cs.FlushFinalBlock();
+                    // Потоковое чтение и запись файла по кускам
+                    while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0) cs.Write(buffer, 0, bytesRead);
+                    cs.Flush();
+                    cs.FlushFinalBlock();
+
+                }
+            }
+            catch (System.Security.Cryptography.CryptographicException)
+            {
+                MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             inFileStream.Close();
@@ -168,8 +190,26 @@ namespace DESCrypterWindowsForms
             {
                 // Чтение файла в массив байтов
                 raw_data = File.ReadAllBytes(ofd.FileName);
-                // Шифрование данных
-                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+
+                // Проверка кратности для режима без дополнений
+                if (DES.Padding == PaddingMode.None & raw_data.Length % 64 != 0)
+                {
+                    raw_data = null;
+                    MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                    return;
+                }
+
+                try
+                {
+                    // Шифрование данных
+                    encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                }
+                catch (System.Security.Cryptography.CryptographicException)
+                {
+                    raw_data = null;
+                    MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 // Вывод зашифрованных данных в текстовое поле
                 cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
                 // Сохранение зашифрованных данных в файл
@@ -186,17 +226,27 @@ namespace DESCrypterWindowsForms
             {
                 // Чтение файла в массив байтов
                 encrypted_data = File.ReadAllBytes(ofd.FileName);
-                // Расшифрование данных
-                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                try
+                {
+                    // Расшифрование данных
+                    raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                }
+                catch (System.Security.Cryptography.CryptographicException)
+                {
+                    encrypted_data = null;
+                    MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 // Вывод расшифрованных данных в текстовое поле
                 decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
-                MessageBox.Show("Файл успешно расшифрован !", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Файл успешно расшифрован!", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void поточноеДешифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() != DialogResult.OK) return;
 
             SaveFileDialog sfd = new SaveFileDialog();
@@ -205,26 +255,41 @@ namespace DESCrypterWindowsForms
             FileStream inFileStream = new FileStream(ofd.FileName, FileMode.Open);
             FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
 
+            // Проверка кратности для режима без дополнений
+            if (DES.Padding == PaddingMode.None & inFileStream.Length % 64 != 0)
+            {
+                MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Byte[] iv = new byte[DES.IV.Length];
             inFileStream.Read(iv, 0, iv.Length);
             DES.IV = iv;
 
             const int blockSize = 1024;
             ICryptoTransform transform = DES.CreateDecryptor();
-
-            using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
+            try
             {
-                byte[] buffer = new byte[blockSize];
-                int bytesRead;
+                using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
+                {
+                    byte[] buffer = new byte[blockSize];
+                    int bytesRead;
 
-                // Потоковое чтение и запись файла по кускам
-                while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0) {
-                    cs.Write(buffer, 0, bytesRead);
+                    // Потоковое чтение и запись файла по кускам
+
+                    while ((bytesRead = inFileStream.Read(buffer, 0, blockSize)) > 0)
+                    {
+                        cs.Write(buffer, 0, bytesRead);
+                    }
+
+                    cs.Flush();
+                    cs.FlushFinalBlock();
                 }
-                
-
-                cs.Flush();
-                cs.FlushFinalBlock();
+            }
+            catch (System.Security.Cryptography.CryptographicException)
+            {
+                MessageBox.Show("Выбран неправильный ключ или режим!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             inFileStream.Close();
@@ -239,7 +304,10 @@ namespace DESCrypterWindowsForms
             switch (toolStripComboBox2.SelectedIndex)
             {
                 case 0: DES.Padding = PaddingMode.ISO10126; break;
-                case 1: DES.Padding = PaddingMode.None; break;
+                case 1: 
+                    DES.Padding = PaddingMode.None;
+                    MessageBox.Show("В режиме без дополнений размер входных данных должен быть кратен 64 битам!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
                 case 2: DES.Padding = PaddingMode.PKCS7; break;
                 case 3: DES.Padding = PaddingMode.Zeros; break;
             }
