@@ -41,6 +41,8 @@
             this.дешифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.загрузитьКлючToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.расшифроватьФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.дешифровкаВПамятиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.поточноеДешифрованиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.режимToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.headerLabel1 = new System.Windows.Forms.Label();
@@ -156,10 +158,25 @@
             // 
             // расшифроватьФайлToolStripMenuItem
             // 
+            this.расшифроватьФайлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.дешифровкаВПамятиToolStripMenuItem,
+            this.поточноеДешифрованиеToolStripMenuItem});
             this.расшифроватьФайлToolStripMenuItem.Name = "расшифроватьФайлToolStripMenuItem";
             this.расшифроватьФайлToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.расшифроватьФайлToolStripMenuItem.Text = "Расшифровать файл";
-            this.расшифроватьФайлToolStripMenuItem.Click += new System.EventHandler(this.расшифроватьФайлToolStripMenuItem_Click);
+            // 
+            // дешифровкаВПамятиToolStripMenuItem
+            // 
+            this.дешифровкаВПамятиToolStripMenuItem.Name = "дешифровкаВПамятиToolStripMenuItem";
+            this.дешифровкаВПамятиToolStripMenuItem.Size = new System.Drawing.Size(250, 24);
+            this.дешифровкаВПамятиToolStripMenuItem.Text = "Дешифровка в памяти";
+            this.дешифровкаВПамятиToolStripMenuItem.Click += new System.EventHandler(this.дешифровкаВПамятиToolStripMenuItem_Click);
+            // 
+            // поточноеДешифрованиеToolStripMenuItem
+            // 
+            this.поточноеДешифрованиеToolStripMenuItem.Name = "поточноеДешифрованиеToolStripMenuItem";
+            this.поточноеДешифрованиеToolStripMenuItem.Size = new System.Drawing.Size(250, 24);
+            this.поточноеДешифрованиеToolStripMenuItem.Text = "Поточное дешифрование";
             // 
             // toolStripComboBox1
             // 
@@ -287,6 +304,8 @@
         private System.Windows.Forms.Button encryptButton;
         private System.Windows.Forms.ToolStripMenuItem шифрованиеВПамятиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem поточноеШифрованиеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem дешифровкаВПамятиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem поточноеДешифрованиеToolStripMenuItem;
     }
 }
 

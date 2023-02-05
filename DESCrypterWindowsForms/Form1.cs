@@ -71,20 +71,6 @@ namespace DESCrypterWindowsForms
             }
         }
 
-        private void расшифроватьФайлToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
-            if (ofd.ShowDialog() == DialogResult.OK) {
-                // Чтение файла в массив байтов
-                encrypted_data = File.ReadAllBytes(ofd.FileName);
-                // Расшифрование данных
-                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
-                // Вывод расшифрованных данных в текстовое поле
-                decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
-                MessageBox.Show("Файл успешно расшифрован !", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
 
         private void encryptButton_Click(object sender, EventArgs e)
         {
@@ -188,6 +174,22 @@ namespace DESCrypterWindowsForms
                 // Сохранение зашифрованных данных в файл
                 File.WriteAllBytes(ofd.FileName + ".crypt", encrypted_data);
                 MessageBox.Show("Файл успешно зашифрован!", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void дешифровкаВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                // Чтение файла в массив байтов
+                encrypted_data = File.ReadAllBytes(ofd.FileName);
+                // Расшифрование данных
+                raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                // Вывод расшифрованных данных в текстовое поле
+                decryptedTextBox.Text = Encoding.UTF8.GetString(raw_data);
+                MessageBox.Show("Файл успешно расшифрован !", "Дешифрование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
