@@ -177,7 +177,7 @@ namespace DESCrypterWindowsForms
             }
         }
 
-        private void дешифровкаВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
+        private void дешифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
