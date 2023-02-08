@@ -27,6 +27,7 @@ namespace DESCrypterWindowsForms
         private void создатьКлючToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Сохранение ключа";
             sfd.RestoreDirectory = true;
             sfd.DefaultExt = ".bin";
             if (sfd.ShowDialog() == DialogResult.OK)
@@ -39,6 +40,7 @@ namespace DESCrypterWindowsForms
         private void загрузитьКлючToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Загрузка ключа";
             ofd.Filter = "key files (*.bin)|*.bin|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -64,6 +66,7 @@ namespace DESCrypterWindowsForms
         private void отобразитьШифрованнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Выбор зашифрованного файла";
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -111,6 +114,7 @@ namespace DESCrypterWindowsForms
         private void saveCryptedButton_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Сохранение зашифрованных данных";
             sfd.DefaultExt = ".crypt";
             if (sfd.ShowDialog() == DialogResult.OK) File.WriteAllBytes(sfd.FileName, encrypted_data);
         }
@@ -118,6 +122,7 @@ namespace DESCrypterWindowsForms
         private void saveDecryptedButton_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Сохранение расшифрованных данных";
             sfd.DefaultExt = ".txt";
             if (sfd.ShowDialog() == DialogResult.OK) File.WriteAllText(sfd.FileName, decryptedTextBox.Text);
         }
@@ -137,9 +142,11 @@ namespace DESCrypterWindowsForms
         private void поточноеШифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Загрузить файл";
             if (ofd.ShowDialog() != DialogResult.OK) return;
 
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Сохранить в файл";
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
             const int blockSize = 1024;
@@ -188,6 +195,7 @@ namespace DESCrypterWindowsForms
         private void шифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Выбор файла";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 // Чтение файла в массив байтов
@@ -223,6 +231,7 @@ namespace DESCrypterWindowsForms
         private void дешифрованиеВПамятиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Выбор зашифрованного файла";
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -248,10 +257,12 @@ namespace DESCrypterWindowsForms
         private void поточноеДешифрованиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Выбор зашифрованного файла";
             ofd.Filter = "crypt files (*.crypt)|*.crypt|All files (*.*)|*.*";
             if (ofd.ShowDialog() != DialogResult.OK) return;
 
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Сохранить в файл";
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
             FileStream inFileStream = new FileStream(ofd.FileName, FileMode.Open);
