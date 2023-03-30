@@ -324,7 +324,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Text = "DES Шифрование";
+            this.Text = "MultiSymCrypter v1.1.0";
             this.menuStripCrypt.ResumeLayout(false);
             this.menuStripCrypt.PerformLayout();
             this.ResumeLayout(false);
