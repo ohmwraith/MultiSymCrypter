@@ -87,7 +87,7 @@ namespace DESCrypterWindowsForms
             if (decryptedTextBox.Text != "")
             {
                 raw_data = Encoding.UTF8.GetBytes(decryptedTextBox.Text);
-                encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                encrypted_data = SymEncryptionDecryption.EncryptData(algorithm, raw_data);
                 cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
             } else
             {
@@ -101,7 +101,7 @@ namespace DESCrypterWindowsForms
             if (cryptedTextBox.Text != "" && encrypted_data.Length != 0)
             {
                 try {
-                    raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                    raw_data = SymEncryptionDecryption.DecryptData(algorithm, encrypted_data);
                 }
                 catch (System.Security.Cryptography.CryptographicException)
                 {
@@ -156,7 +156,7 @@ namespace DESCrypterWindowsForms
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
             const int blockSize = 1024;
-            ICryptoTransform transform = DES.CreateEncryptor();
+            ICryptoTransform transform = algorithm.CreateEncryptor();
 
             FileStream inFileStream = new FileStream(ofd.FileName, FileMode.Open);
             FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
@@ -286,7 +286,7 @@ namespace DESCrypterWindowsForms
             DES.IV = iv;
 
             const int blockSize = 1024;
-            ICryptoTransform transform = DES.CreateDecryptor();
+            ICryptoTransform transform = algorithm.CreateDecryptor();
             try
             {
                 using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
@@ -367,49 +367,6 @@ namespace DESCrypterWindowsForms
 
             }
 
-
-        }
-    }
-    public class DESEncryptionDecryption{
-        public static byte[] crypt(DESCryptoServiceProvider DES, byte[] data)
-        {
-            byte[] crypted_data;
-            ICryptoTransform transform = DES.CreateEncryptor();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                // Запись случайного вектора инициализации без его шифрования
-                ms.Write(DES.IV, 0, DES.IV.Length);
-                // Создание криптографического потока в режиме записи
-                using (CryptoStream cs = new CryptoStream(ms, transform, CryptoStreamMode.Write))
-                {
-                    cs.Write(data, 0, data.Length);
-                    cs.Flush();
-                    cs.FlushFinalBlock();
-                }
-                crypted_data = ms.ToArray();
-            }
-            return crypted_data;
-        }
-        public static byte[] decrypt(DESCryptoServiceProvider DES, byte[] data)
-        {
-            byte[] decrypted_data;
-            using (MemoryStream ms = new MemoryStream(data))
-            {
-                // Чтение вектора инициализации из потока
-                Byte[] iv = new byte[DES.IV.Length];
-                ms.Read(iv, 0, iv.Length);
-                DES.IV = iv;
-                // Создание интерфейса преобразования для дешифрования по алгоритму DES
-                ICryptoTransform transform = DES.CreateDecryptor();
-                // Создание криптографического потока в режиме записи. Этот поток будет
-                // декодировать двоичные данные сразу после их чтения из потока
-                using (CryptoStream cs = new CryptoStream(ms, transform, CryptoStreamMode.Read))
-                {
-                    decrypted_data = new byte[ms.Length];
-                    cs.Read(decrypted_data, 0, decrypted_data.Length);
-                }
-            return decrypted_data;
-            }
 
         }
     }
