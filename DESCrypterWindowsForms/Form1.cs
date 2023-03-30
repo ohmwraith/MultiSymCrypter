@@ -19,7 +19,13 @@ namespace DESCrypterWindowsForms
             InitializeComponent();
             toolStripComboBox1.SelectedIndex = 0;
             toolStripComboBox2.SelectedIndex = 0;
+            toolStripComboBox3.SelectedIndex = 0;
         }
+        SymmetricAlgorithm algorithm;
+        TripleDESCryptoServiceProvider TDES = new TripleDESCryptoServiceProvider();
+        RC2CryptoServiceProvider RC2 = new RC2CryptoServiceProvider();
+        RijndaelManaged Rij = new RijndaelManaged();
+        AesCryptoServiceProvider AES = new AesCryptoServiceProvider();
         DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
         byte[] raw_data;
         byte[] encrypted_data;
@@ -202,7 +208,7 @@ namespace DESCrypterWindowsForms
                 raw_data = File.ReadAllBytes(ofd.FileName);
 
                 // Проверка кратности для режима без дополнений
-                if (DES.Padding == PaddingMode.None & raw_data.Length % 64 != 0)
+                if (DES.Padding == PaddingMode.None & raw_data.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter"|| headerLabel1.Text == "TripleDESCrypter"))
                 {
                     raw_data = null;
                     MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error); 
@@ -212,7 +218,7 @@ namespace DESCrypterWindowsForms
                 try
                 {
                     // Шифрование данных
-                    encrypted_data = DESEncryptionDecryption.crypt(DES, raw_data);
+                    encrypted_data = SymEncryptionDecryption.EncryptData(algorithm, raw_data);
                 }
                 catch (System.Security.Cryptography.CryptographicException)
                 {
@@ -240,7 +246,7 @@ namespace DESCrypterWindowsForms
                 try
                 {
                     // Расшифрование данных
-                    raw_data = DESEncryptionDecryption.decrypt(DES, encrypted_data);
+                    raw_data = SymEncryptionDecryption.DecryptData(algorithm, encrypted_data);
                 }
                 catch (System.Security.Cryptography.CryptographicException)
                 {
@@ -328,6 +334,41 @@ namespace DESCrypterWindowsForms
 
 
         }
+
+        private void toolStripComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (toolStripComboBox3.SelectedIndex)
+            {
+                case 0: headerLabel1.Text = "DESCrypter";
+                    algorithm = SymmetricAlgorithm.Create("DES");
+                    toolStripComboBox1.Enabled = true;
+                    toolStripComboBox2.Enabled = true;
+                    break;
+                case 1: headerLabel1.Text = "TripleDESCrypter";
+                    algorithm = SymmetricAlgorithm.Create("TripleDES");
+                    toolStripComboBox1.Enabled = true;
+                    toolStripComboBox2.Enabled = true; 
+                    break;
+                case 2: headerLabel1.Text = "RC2Crypter";
+                    algorithm = SymmetricAlgorithm.Create("RC2");
+                    toolStripComboBox1.Enabled = false;
+                    toolStripComboBox2.Enabled = false; 
+                    break;
+                case 3: headerLabel1.Text = "RijCrypter";
+                    algorithm = SymmetricAlgorithm.Create("Rijndael");
+                    toolStripComboBox1.Enabled = false;
+                    toolStripComboBox2.Enabled = false;
+                    break;
+                case 4: headerLabel1.Text = "AESCrypter";
+                    algorithm = SymmetricAlgorithm.Create("AES");
+                    toolStripComboBox1.Enabled = false;
+                    toolStripComboBox2.Enabled = false;
+                    break;
+
+            }
+
+
+        }
     }
     public class DESEncryptionDecryption{
         public static byte[] crypt(DESCryptoServiceProvider DES, byte[] data)
@@ -372,4 +413,51 @@ namespace DESCrypterWindowsForms
 
         }
     }
+    public class SymEncryptionDecryption
+    {
+        public static byte[] EncryptData(SymmetricAlgorithm algorithm, byte[] data)
+        {
+            // Create a new encryptor from the algorithm passed in.
+            ICryptoTransform encryptor = algorithm.CreateEncryptor();
+
+            // Create an output stream to write the encrypted data to.
+            MemoryStream outputStream = new MemoryStream();
+
+            // Create a CryptoStream to perform the encryption.
+            using (CryptoStream cryptoStream = new CryptoStream(outputStream, encryptor, CryptoStreamMode.Write))
+            {
+                // Write the data to the CryptoStream.
+                cryptoStream.Write(data, 0, data.Length);
+            }
+
+            // Return the encrypted data as a byte array.
+            return outputStream.ToArray();
+        }
+        public static byte[] DecryptData(SymmetricAlgorithm algorithm, byte[] encryptedData)
+        {
+            // Create a new decryptor from the algorithm passed in.
+            ICryptoTransform decryptor = algorithm.CreateDecryptor();
+
+            // Create an input stream to read the encrypted data from.
+            MemoryStream inputStream = new MemoryStream(encryptedData);
+
+            // Create a CryptoStream to perform the decryption.
+            using (CryptoStream cryptoStream = new CryptoStream(inputStream, decryptor, CryptoStreamMode.Read))
+            {
+                // Read the decrypted data from the CryptoStream.
+                byte[] decryptedData = new byte[encryptedData.Length];
+                int bytesRead = cryptoStream.Read(decryptedData, 0, decryptedData.Length);
+
+                // Trim any padding bytes that may have been added during encryption.
+                if (bytesRead < decryptedData.Length)
+                {
+                    Array.Resize(ref decryptedData, bytesRead);
+                }
+
+                // Return the decrypted data as a byte array.
+                return decryptedData;
+            }
+        }
+    }
+
 }

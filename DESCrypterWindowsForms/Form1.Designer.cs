@@ -52,6 +52,8 @@
             this.saveCryptedButton = new System.Windows.Forms.Button();
             this.saveDecryptedButton = new System.Windows.Forms.Button();
             this.encryptButton = new System.Windows.Forms.Button();
+            this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
+            this.алгоритмToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripCrypt.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,23 +61,23 @@
             // 
             this.cryptedTextBox.EnableAutoDragDrop = true;
             this.cryptedTextBox.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cryptedTextBox.Location = new System.Drawing.Point(27, 117);
+            this.cryptedTextBox.Location = new System.Drawing.Point(19, 117);
             this.cryptedTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.cryptedTextBox.Name = "cryptedTextBox";
             this.cryptedTextBox.ReadOnly = true;
             this.cryptedTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.cryptedTextBox.Size = new System.Drawing.Size(276, 147);
+            this.cryptedTextBox.Size = new System.Drawing.Size(413, 272);
             this.cryptedTextBox.TabIndex = 0;
             this.cryptedTextBox.Text = "";
             // 
             // decryptedTextBox
             // 
             this.decryptedTextBox.Font = new System.Drawing.Font("Metropolis", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decryptedTextBox.Location = new System.Drawing.Point(345, 117);
+            this.decryptedTextBox.Location = new System.Drawing.Point(428, 117);
             this.decryptedTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.decryptedTextBox.Name = "decryptedTextBox";
             this.decryptedTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.decryptedTextBox.Size = new System.Drawing.Size(276, 147);
+            this.decryptedTextBox.Size = new System.Drawing.Size(404, 272);
             this.decryptedTextBox.TabIndex = 1;
             this.decryptedTextBox.Text = "";
             // 
@@ -89,11 +91,13 @@
             this.toolStripComboBox1,
             this.режимToolStripMenuItem,
             this.toolStripComboBox2,
-            this.дополнениеToolStripMenuItem});
+            this.дополнениеToolStripMenuItem,
+            this.toolStripComboBox3,
+            this.алгоритмToolStripMenuItem});
             this.menuStripCrypt.Location = new System.Drawing.Point(0, 0);
             this.menuStripCrypt.Name = "menuStripCrypt";
             this.menuStripCrypt.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStripCrypt.Size = new System.Drawing.Size(643, 31);
+            this.menuStripCrypt.Size = new System.Drawing.Size(849, 31);
             this.menuStripCrypt.TabIndex = 2;
             this.menuStripCrypt.Text = "Шифрование";
             // 
@@ -240,9 +244,9 @@
             // decryptButton
             // 
             this.decryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decryptButton.Location = new System.Drawing.Point(27, 269);
+            this.decryptButton.Location = new System.Drawing.Point(19, 394);
             this.decryptButton.Name = "decryptButton";
-            this.decryptButton.Size = new System.Drawing.Size(134, 38);
+            this.decryptButton.Size = new System.Drawing.Size(199, 51);
             this.decryptButton.TabIndex = 4;
             this.decryptButton.Text = "Расшифровать";
             this.decryptButton.UseVisualStyleBackColor = true;
@@ -251,9 +255,9 @@
             // saveCryptedButton
             // 
             this.saveCryptedButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveCryptedButton.Location = new System.Drawing.Point(169, 269);
+            this.saveCryptedButton.Location = new System.Drawing.Point(224, 394);
             this.saveCryptedButton.Name = "saveCryptedButton";
-            this.saveCryptedButton.Size = new System.Drawing.Size(134, 38);
+            this.saveCryptedButton.Size = new System.Drawing.Size(199, 51);
             this.saveCryptedButton.TabIndex = 5;
             this.saveCryptedButton.Text = "Сохранить";
             this.saveCryptedButton.UseVisualStyleBackColor = true;
@@ -262,9 +266,9 @@
             // saveDecryptedButton
             // 
             this.saveDecryptedButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveDecryptedButton.Location = new System.Drawing.Point(487, 269);
+            this.saveDecryptedButton.Location = new System.Drawing.Point(633, 394);
             this.saveDecryptedButton.Name = "saveDecryptedButton";
-            this.saveDecryptedButton.Size = new System.Drawing.Size(134, 38);
+            this.saveDecryptedButton.Size = new System.Drawing.Size(199, 51);
             this.saveDecryptedButton.TabIndex = 7;
             this.saveDecryptedButton.Text = "Сохранить";
             this.saveDecryptedButton.UseVisualStyleBackColor = true;
@@ -273,19 +277,39 @@
             // encryptButton
             // 
             this.encryptButton.Font = new System.Drawing.Font("Metropolis", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.encryptButton.Location = new System.Drawing.Point(345, 269);
+            this.encryptButton.Location = new System.Drawing.Point(429, 394);
             this.encryptButton.Name = "encryptButton";
-            this.encryptButton.Size = new System.Drawing.Size(134, 38);
+            this.encryptButton.Size = new System.Drawing.Size(199, 51);
             this.encryptButton.TabIndex = 6;
             this.encryptButton.Text = "Зашифровать";
             this.encryptButton.UseVisualStyleBackColor = true;
             this.encryptButton.Click += new System.EventHandler(this.encryptButton_Click);
             // 
+            // toolStripComboBox3
+            // 
+            this.toolStripComboBox3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripComboBox3.Items.AddRange(new object[] {
+            "DES",
+            "TripleDES",
+            "RC2",
+            "Rijndael",
+            "AES"});
+            this.toolStripComboBox3.Name = "toolStripComboBox3";
+            this.toolStripComboBox3.Size = new System.Drawing.Size(121, 27);
+            this.toolStripComboBox3.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox3_SelectedIndexChanged);
+            // 
+            // алгоритмToolStripMenuItem
+            // 
+            this.алгоритмToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.алгоритмToolStripMenuItem.Name = "алгоритмToolStripMenuItem";
+            this.алгоритмToolStripMenuItem.Size = new System.Drawing.Size(83, 27);
+            this.алгоритмToolStripMenuItem.Text = "Алгоритм";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 333);
+            this.ClientSize = new System.Drawing.Size(849, 458);
             this.Controls.Add(this.saveDecryptedButton);
             this.Controls.Add(this.encryptButton);
             this.Controls.Add(this.saveCryptedButton);
@@ -332,6 +356,8 @@
         private System.Windows.Forms.ToolStripMenuItem поточноеДешифрованиеToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
         private System.Windows.Forms.ToolStripMenuItem дополнениеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
+        private System.Windows.Forms.ToolStripMenuItem алгоритмToolStripMenuItem;
     }
 }
 
