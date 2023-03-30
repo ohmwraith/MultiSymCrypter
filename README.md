@@ -1,6 +1,7 @@
 # **MultiSymCrypter**
 
 MultiSymCrypter - это Windows Forms приложение, разработанное на C#, которое предназначено для шифрования файлов посредством алгоритмов DES, TripleDES, RC2, Rijndael и AES.
+![image](https://user-images.githubusercontent.com/44874495/228728715-619fcffd-0823-4099-b7ac-a3a4c6f23b1d.png)
 
 ## **Установка**
 
