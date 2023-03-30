@@ -197,8 +197,7 @@
             this.toolStripComboBox1.Items.AddRange(new object[] {
             "CBC",
             "CFB",
-            "ECB",
-            "OFB"});
+            "ECB"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(92, 27);
             this.toolStripComboBox1.ToolTipText = resources.GetString("toolStripComboBox1.ToolTipText");

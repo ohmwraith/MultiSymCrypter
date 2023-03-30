@@ -17,17 +17,12 @@ namespace DESCrypterWindowsForms
         public Form1()
         {
             InitializeComponent();
+            toolStripComboBox3.SelectedIndex = 0;
             toolStripComboBox1.SelectedIndex = 0;
             toolStripComboBox2.SelectedIndex = 0;
-            toolStripComboBox3.SelectedIndex = 0;
         }
         bool algoChangeWarningShowFlag = false;
         SymmetricAlgorithm algorithm;
-        TripleDESCryptoServiceProvider TDES = new TripleDESCryptoServiceProvider();
-        RC2CryptoServiceProvider RC2 = new RC2CryptoServiceProvider();
-        RijndaelManaged Rij = new RijndaelManaged();
-        AesCryptoServiceProvider AES = new AesCryptoServiceProvider();
-        DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
         byte[] raw_data;
         byte[] encrypted_data;
 
@@ -39,7 +34,7 @@ namespace DESCrypterWindowsForms
             sfd.DefaultExt = ".bin";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllBytes(sfd.FileName, DES.Key);
+                File.WriteAllBytes(sfd.FileName, algorithm.Key);
                 MessageBox.Show("Ключ успешно сохранен", "Создание ключа", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -56,7 +51,7 @@ namespace DESCrypterWindowsForms
                 {
                     byte[] key = new byte[8];
                     key = File.ReadAllBytes(ofd.FileName);
-                    DES.Key = key;
+                    algorithm.Key = key;
                     MessageBox.Show("Ключ успешно загружен", "Загрузка ключа", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (System.Exception)
@@ -64,11 +59,11 @@ namespace DESCrypterWindowsForms
                     // Если файл не является ключом, то выводится сообщение об ошибке
                     MessageBox.Show("Выбранный файл не является ключом", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+
             }
 
         }
-        
+
 
         private void отобразитьШифрованнуюИнформациюToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -90,7 +85,8 @@ namespace DESCrypterWindowsForms
                 raw_data = Encoding.UTF8.GetBytes(decryptedTextBox.Text);
                 encrypted_data = SymEncryptionDecryption.EncryptData(algorithm, raw_data);
                 cryptedTextBox.Text = Encoding.UTF8.GetString(encrypted_data);
-            } else
+            }
+            else
             {
                 MessageBox.Show("Сначала введите текст в поле", "Шифрование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -101,7 +97,8 @@ namespace DESCrypterWindowsForms
         {
             if (cryptedTextBox.Text != "" && encrypted_data.Length != 0)
             {
-                try {
+                try
+                {
                     raw_data = SymEncryptionDecryption.DecryptData(algorithm, encrypted_data);
                 }
                 catch (System.Security.Cryptography.CryptographicException)
@@ -138,10 +135,10 @@ namespace DESCrypterWindowsForms
         {
             switch (toolStripComboBox1.SelectedIndex)
             {
-                case 0: DES.Mode = CipherMode.CBC; break;
-                case 1: DES.Mode = CipherMode.CFB; break;        
-                case 2: DES.Mode = CipherMode.ECB; break;
-                case 3: DES.Mode = CipherMode.OFB; break;
+                case 0: algorithm.Mode = CipherMode.CBC; break;
+                case 1: algorithm.Mode = CipherMode.CFB; break;
+                case 2: algorithm.Mode = CipherMode.ECB; break;
+                case 3: algorithm.Mode = CipherMode.OFB; break;
             }
         }
 
@@ -163,13 +160,13 @@ namespace DESCrypterWindowsForms
             FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
 
             // Проверка кратности для режима без дополнений
-            if (DES.Padding == PaddingMode.None & inFileStream.Length % 64 != 0)
+            if (algorithm.Padding == PaddingMode.None & inFileStream.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter" || headerLabel1.Text == "TripleDESCrypter"))
             {
                 MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            outFileStream.Write(DES.IV, 0, DES.IV.Length);
+            outFileStream.Write(algorithm.IV, 0, algorithm.IV.Length);
             try
             {
                 using (CryptoStream cs = new CryptoStream(outFileStream, transform, CryptoStreamMode.Write))
@@ -209,10 +206,10 @@ namespace DESCrypterWindowsForms
                 raw_data = File.ReadAllBytes(ofd.FileName);
 
                 // Проверка кратности для режима без дополнений
-                if (DES.Padding == PaddingMode.None & raw_data.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter"|| headerLabel1.Text == "TripleDESCrypter"))
+                if (algorithm.Padding == PaddingMode.None & raw_data.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter" || headerLabel1.Text == "TripleDESCrypter"))
                 {
                     raw_data = null;
-                    MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                    MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -244,6 +241,11 @@ namespace DESCrypterWindowsForms
             {
                 // Чтение файла в массив байтов
                 encrypted_data = File.ReadAllBytes(ofd.FileName);
+                if (algorithm.Padding == PaddingMode.None & encrypted_data.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter" || headerLabel1.Text == "TripleDESCrypter"))
+                {
+                    MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 try
                 {
                     // Расшифрование данных
@@ -276,15 +278,15 @@ namespace DESCrypterWindowsForms
             FileStream outFileStream = new FileStream(sfd.FileName, FileMode.OpenOrCreate);
 
             // Проверка кратности для режима без дополнений
-            if (DES.Padding == PaddingMode.None & inFileStream.Length % 64 != 0)
+            if (algorithm.Padding == PaddingMode.None & inFileStream.Length % 64 != 0 && (headerLabel1.Text == "DESCrypter" || headerLabel1.Text == "TripleDESCrypter"))
             {
                 MessageBox.Show("Входные данные не кратны 64 битам!", "Шифрование без дополнений", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Byte[] iv = new byte[DES.IV.Length];
+            Byte[] iv = new byte[algorithm.IV.Length];
             inFileStream.Read(iv, 0, iv.Length);
-            DES.IV = iv;
+            algorithm.IV = iv;
 
             const int blockSize = 1024;
             ICryptoTransform transform = algorithm.CreateDecryptor();
@@ -324,13 +326,13 @@ namespace DESCrypterWindowsForms
         {
             switch (toolStripComboBox2.SelectedIndex)
             {
-                case 0: DES.Padding = PaddingMode.ISO10126; break;
-                case 1: 
-                    DES.Padding = PaddingMode.None;
+                case 0: algorithm.Padding = PaddingMode.ISO10126; break;
+                case 1:
+                    algorithm.Padding = PaddingMode.None;
                     MessageBox.Show("В режиме без дополнений размер входных данных должен быть кратен 64 битам!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
-                case 2: DES.Padding = PaddingMode.PKCS7; break;
-                case 3: DES.Padding = PaddingMode.Zeros; break;
+                case 2: algorithm.Padding = PaddingMode.PKCS7; break;
+                case 3: algorithm.Padding = PaddingMode.Zeros; break;
             }
 
 
@@ -340,30 +342,25 @@ namespace DESCrypterWindowsForms
         {
             switch (toolStripComboBox3.SelectedIndex)
             {
-                case 0: headerLabel1.Text = "DESCrypter";
+                case 0:
+                    headerLabel1.Text = "DESCrypter";
                     algorithm = SymmetricAlgorithm.Create("DES");
-                    toolStripComboBox1.Enabled = true;
-                    toolStripComboBox2.Enabled = true;
                     break;
-                case 1: headerLabel1.Text = "TripleDESCrypter";
+                case 1:
+                    headerLabel1.Text = "TripleDESCrypter";
                     algorithm = SymmetricAlgorithm.Create("TripleDES");
-                    toolStripComboBox1.Enabled = true;
-                    toolStripComboBox2.Enabled = true; 
                     break;
-                case 2: headerLabel1.Text = "RC2Crypter";
+                case 2:
+                    headerLabel1.Text = "RC2Crypter";
                     algorithm = SymmetricAlgorithm.Create("RC2");
-                    toolStripComboBox1.Enabled = false;
-                    toolStripComboBox2.Enabled = false; 
                     break;
-                case 3: headerLabel1.Text = "RijCrypter";
+                case 3:
+                    headerLabel1.Text = "RijCrypter";
                     algorithm = SymmetricAlgorithm.Create("Rijndael");
-                    toolStripComboBox1.Enabled = false;
-                    toolStripComboBox2.Enabled = false;
                     break;
-                case 4: headerLabel1.Text = "AESCrypter";
+                case 4:
+                    headerLabel1.Text = "AESCrypter";
                     algorithm = SymmetricAlgorithm.Create("AES");
-                    toolStripComboBox1.Enabled = false;
-                    toolStripComboBox2.Enabled = false;
                     break;
 
             }
