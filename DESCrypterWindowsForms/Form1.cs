@@ -21,6 +21,7 @@ namespace DESCrypterWindowsForms
             toolStripComboBox2.SelectedIndex = 0;
             toolStripComboBox3.SelectedIndex = 0;
         }
+        bool algoChangeWarningShowFlag = false;
         SymmetricAlgorithm algorithm;
         TripleDESCryptoServiceProvider TDES = new TripleDESCryptoServiceProvider();
         RC2CryptoServiceProvider RC2 = new RC2CryptoServiceProvider();
@@ -368,6 +369,15 @@ namespace DESCrypterWindowsForms
             }
 
 
+        }
+
+        private void toolStripComboBox3_Click(object sender, EventArgs e)
+        {
+            if (algoChangeWarningShowFlag == false)
+            {
+                MessageBox.Show("При смене алгоритма вы потеряете ключ шифрования, обязательно сохраните его!", "Выбор алгоритма", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                algoChangeWarningShowFlag = true;
+            }
         }
     }
     public class SymEncryptionDecryption
